@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import Layout from '../../Component/layout/Layout'
-import style from './QA.module.css'
-import Answer from '../../Component/answer/Answer';
-import axios from '../../API/axiosConfig';
-import { useParams } from 'react-router-dom';
-import {FadeLoader} from 'react-spinners'
-import PostAnswer from '../../Component/postAnswer/PostAnswer';
+import React, { useEffect, useState } from "react";
+import Layout from "../../Component/layout/Layout";
+import style from "./QA.module.css";
+import Answer from "../../Component/answer/Answer";
+import axios from "../../API/axiosConfig";
+import { useParams } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
+import PostAnswer from "../../Component/postAnswer/PostAnswer";
+import axiosBase from "../../API/axiosConfig";
 
 function QuesAndAnw() {
-  const [question, setQuestion] = useState(null)
+  const [question, setQuestion] = useState(null);
   const { question_id } = useParams();
   useEffect(() => {
     const getQuestion = async () => {
       try {
-        await axios
+        await axiosBase
           .get(`/question/${question_id}`)
           .then((res) => {
             setQuestion(res.data);
@@ -23,9 +24,9 @@ function QuesAndAnw() {
       } catch (error) {
         console.log(error, "Something wrong, try again");
       }
-    }
+    };
     getQuestion();
-  }, [question_id])
+  }, [question_id]);
   return (
     <Layout>
       {question ? (
@@ -39,7 +40,7 @@ function QuesAndAnw() {
             <h1>Answer From The Community</h1>
           </div>
           <Answer />
-          <PostAnswer/>
+          <PostAnswer />
         </>
       ) : (
         <div className={style.spinner}>
@@ -50,4 +51,4 @@ function QuesAndAnw() {
   );
 }
 
-export default QuesAndAnw
+export default QuesAndAnw;

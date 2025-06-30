@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import axios from '../../API/axiosConfig'
-import QuestionCard from './QuestionCard'
-import style from './question.module.css'
+import React, { useEffect, useState } from "react";
+import axios from "../../API/axiosConfig";
+import QuestionCard from "./QuestionCard";
+import style from "./question.module.css";
+import axiosBase from "../../API/axiosConfig";
 
 function Question() {
-  const [questions, setQuestions] = useState([])
-  const [search, setSearch] = useState(""); 
+  const [questions, setQuestions] = useState([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     const getQuestions = async () => {
       try {
-        await axios
+        await axiosBase
           .get("/question")
           .then((res) => {
             setQuestions(res.data);
@@ -18,11 +19,10 @@ function Question() {
           .catch((error) => console.log(error));
       } catch (error) {
         console.log(error, "Something wrong, try again");
-        
       }
-    }
+    };
     getQuestions();
-  }, [])
+  }, []);
 
   const filteredQuestions = questions.filter(
     (q) =>
@@ -51,4 +51,4 @@ function Question() {
   );
 }
 
-export default Question
+export default Question;

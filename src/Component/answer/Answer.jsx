@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import axios from '../../API/axiosConfig';
-import style from './answer.module.css'
-import AnswerCard from './AnswerCard';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "../../API/axiosConfig";
+import style from "./answer.module.css";
+import AnswerCard from "./AnswerCard";
+import { useParams } from "react-router-dom";
+import axiosBase from "../../API/axiosConfig";
 
 function Answer() {
   const [answers, setAnswers] = useState([]);
@@ -10,7 +11,7 @@ function Answer() {
   useEffect(() => {
     const getAnswers = async () => {
       try {
-        await axios
+        await axiosBase
           .get(`/question/${question_id}/answer`)
           .then((res) => {
             setAnswers(res.data);
@@ -35,4 +36,4 @@ function Answer() {
   );
 }
 
-export default Answer
+export default Answer;

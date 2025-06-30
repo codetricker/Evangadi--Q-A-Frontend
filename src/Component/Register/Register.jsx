@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom"; // ✅ Import Link to handle URL updates
 import styles from "./register.module.css";
 import axios from "../../API/axiosConfig"; // ✅ Import axios for API requests
+import axiosBase from "../../API/axiosConfig";
 
 function Register({ visible }) {
   const usernameDom = useRef();
@@ -31,7 +32,7 @@ function Register({ visible }) {
     }
 
     try {
-      await axios.post("/user/register", {
+      await axiosBase.post("/user/register", {
         user_name: usernameValue,
         first_name: firstnameValue,
         last_name: lastnameValue,
@@ -44,10 +45,9 @@ function Register({ visible }) {
       const errorMessage =
         error.response?.data?.message ||
         "Something went wrong. Please try again.";
-      alert(errorMessage); 
+      alert(errorMessage);
       // console.log("Error:", errorMessage);
     }
-    
   }
 
   return (
@@ -72,7 +72,6 @@ function Register({ visible }) {
         <button type="submit">Register</button>
       </form>
 
-   
       <Link
         to="/login"
         onClick={() => handleToggl(false)}

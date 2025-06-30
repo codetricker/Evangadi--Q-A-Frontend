@@ -20,7 +20,7 @@ const Header = () => {
       <nav className={styles.navLinks}>
         {/* Home link for authenticated users */}
         {token && (
-          <Link to="/home" className={styles.link} >
+          <Link to="/home" className={styles.link}>
             Home
           </Link>
         )}

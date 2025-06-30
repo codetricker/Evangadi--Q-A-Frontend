@@ -1,33 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from "react";
 import style from "./answer.module.css";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { AiOutlineLike } from "react-icons/ai";
 import { AiOutlineDislike } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
-import axios from '../../API/axiosConfig'
-import {appState} from '../../App'
-
-
+import axios from "../../API/axiosConfig";
+import { appState } from "../../App";
+import axiosBase from "../../API/axiosConfig";
 
 function AnswerCard({ data }) {
-  const {user} = useContext(appState)
-  const [likeCount, setLikeCount] = useState(0)
-  const [dislikeCount, setDislikeCount] = useState(0)
-  const [activeBtn, setActiveBtn] = useState('none')
+  const { user } = useContext(appState);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
+  const [activeBtn, setActiveBtn] = useState("none");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
 
-console.log(user);
+  console.log(user);
 
   useEffect(() => {
     const fetchReactions = async () => {
       try {
-        const res = await axios.get(`/answer/${data.answer_id}/react`);
+        const res = await axiosBase.get(`/answer/${data.answer_id}/react`);
         console.log(res);
         setLikeCount(res.data.likeCount);
         setDislikeCount(res.data.dislikeCount);
-        setActiveBtn(res.data.userReaction); 
+        setActiveBtn(res.data.userReaction);
       } catch (error) {
         console.error("Failed to fetch reactions:", error);
         console.log(error.response.data);
@@ -37,75 +36,66 @@ console.log(user);
     fetchReactions();
   }, [data.answer_id]);
 
-
-
-
   const handleReactionClick = async (reaction) => {
-    
-      try {
-        
-        await axios.post(`/answer/${data.answer_id}/react`, {
-          reaction_type: reaction,
-          user_id: user.userid
-        });
+    try {
+      await axiosBase.post(`/answer/${data.answer_id}/react`, {
+        reaction_type: reaction,
+        user_id: user.userid,
+      });
 
+      // if (activeBtn === "none") {
+      //   if (reaction === "like") {
+      //     setLikeCount(likeCount + 1);
+      //     setActiveBtn("like");
+      //   } else if (reaction === "dislike") {
+      //     setDislikeCount(dislikeCount + 1);
+      //     setActiveBtn("dislike");
+      //   }
+      // } else if (activeBtn === reaction) {
+      //   if (reaction === "like") {
+      //     setLikeCount(likeCount - 1);
+      //   } else if (reaction === "dislike") {
+      //     setDislikeCount(dislikeCount - 1);
+      //   }
+      //   setActiveBtn("none");
+      // } else if (activeBtn !== reaction) {
+      //   if (reaction === "like") {
+      //     setLikeCount(likeCount + 1);
+      //     setDislikeCount(dislikeCount - 1);
+      //     setActiveBtn("like");
+      //   } else if (reaction === "dislike") {
+      //     setDislikeCount(dislikeCount + 1);
+      //     setLikeCount(likeCount - 1);
+      //     setActiveBtn("dislike");
+      //   }
+      // }
 
-        // if (activeBtn === "none") {
-        //   if (reaction === "like") {
-        //     setLikeCount(likeCount + 1);
-        //     setActiveBtn("like");
-        //   } else if (reaction === "dislike") {
-        //     setDislikeCount(dislikeCount + 1);
-        //     setActiveBtn("dislike");
-        //   }
-        // } else if (activeBtn === reaction) {
-        //   if (reaction === "like") {
-        //     setLikeCount(likeCount - 1);
-        //   } else if (reaction === "dislike") {
-        //     setDislikeCount(dislikeCount - 1);
-        //   }
-        //   setActiveBtn("none");
-        // } else if (activeBtn !== reaction) {
-        //   if (reaction === "like") {
-        //     setLikeCount(likeCount + 1);
-        //     setDislikeCount(dislikeCount - 1);
-        //     setActiveBtn("like");
-        //   } else if (reaction === "dislike") {
-        //     setDislikeCount(dislikeCount + 1);
-        //     setLikeCount(likeCount - 1);
-        //     setActiveBtn("dislike");
-        //   }
-        // }
-
-        if (activeBtn === "none") {
-          reaction === "like"
-            ? setLikeCount(likeCount + 1)
-            : setDislikeCount(dislikeCount + 1);
-          setActiveBtn(reaction);
-        } else if (activeBtn === reaction) {
-          reaction === "like"
-            ? setLikeCount(likeCount - 1)
-            : setDislikeCount(dislikeCount - 1);
-          setActiveBtn("none");
-        } else {
-          reaction === "like"
-            ? (setLikeCount(likeCount + 1), setDislikeCount(dislikeCount - 1))
-            : (setDislikeCount(dislikeCount + 1), setLikeCount(likeCount - 1));
-          setActiveBtn(reaction);
-        }
-
-      } catch (error) {
-        console.error("Reaction error:", error);
+      if (activeBtn === "none") {
+        reaction === "like"
+          ? setLikeCount(likeCount + 1)
+          : setDislikeCount(dislikeCount + 1);
+        setActiveBtn(reaction);
+      } else if (activeBtn === reaction) {
+        reaction === "like"
+          ? setLikeCount(likeCount - 1)
+          : setDislikeCount(dislikeCount - 1);
+        setActiveBtn("none");
+      } else {
+        reaction === "like"
+          ? (setLikeCount(likeCount + 1), setDislikeCount(dislikeCount - 1))
+          : (setDislikeCount(dislikeCount + 1), setLikeCount(likeCount - 1));
+        setActiveBtn(reaction);
       }
+    } catch (error) {
+      console.error("Reaction error:", error);
+    }
+  };
 
-   
-  }
-  
   const getComment = async () => {
     try {
-      const res = await axios.get(`/answer/${data.answer_id}/comment`);
+      const res = await axiosBase.get(`/answer/${data.answer_id}/comment`);
       console.log("Fetched comments:", res.data);
-      setComments(res.data); 
+      setComments(res.data);
       setShowComments(!showComments);
     } catch (err) {
       console.error("Error fetching comments:", err.message);
@@ -118,16 +108,14 @@ console.log(user);
     setShowComments(!showComments);
   };
 
-  
   const postComment = async () => {
-    
     try {
-      await axios.post(`/answer/${data.answer_id}/comment`, {
+      await axiosBase.post(`/answer/${data.answer_id}/comment`, {
         content: newComment,
         user_id: user.userid,
       });
-      setNewComment(""); 
-      getComment(); 
+      setNewComment("");
+      getComment();
     } catch (err) {
       console.error(" Error posting comment:", err.message);
     }
@@ -212,4 +200,4 @@ console.log(user);
   );
 }
 
-export default AnswerCard
+export default AnswerCard;

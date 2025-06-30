@@ -1,17 +1,18 @@
-import React, { useContext, useRef } from 'react'
-import style from './ask.module.css'
-import Layout from '../../Component/layout/Layout'
-import axios from '../../API/axiosConfig'
-import { useNavigate } from 'react-router-dom'
-import {appState} from '../../App'
+import React, { useContext, useRef } from "react";
+import style from "./ask.module.css";
+import Layout from "../../Component/layout/Layout";
+import axios from "../../API/axiosConfig";
+import { useNavigate } from "react-router-dom";
+import { appState } from "../../App";
+import axiosBase from "../../API/axiosConfig";
 
 function AskQuestion() {
   const navigate = useNavigate();
   const { user } = useContext(appState);
   const titleDom = useRef();
-  const descriptionDom = useRef()
+  const descriptionDom = useRef();
 
-console.log(user.userid);
+  console.log(user.userid);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const titleValue = titleDom.current.value;
@@ -20,7 +21,7 @@ console.log(user.userid);
       return;
     }
     try {
-      await axios.post("/question", {
+      await axiosBase.post("/question", {
         user_id: user.userid,
         title: titleValue,
         content: descriptionValue,
@@ -31,8 +32,7 @@ console.log(user.userid);
       alert("server error");
       console.log(error.response);
     }
-      
-  }
+  };
 
   return (
     <Layout>
@@ -75,4 +75,4 @@ console.log(user.userid);
   );
 }
 
-export default AskQuestion
+export default AskQuestion;

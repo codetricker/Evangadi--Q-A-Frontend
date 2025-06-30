@@ -2,9 +2,10 @@ import React, { useRef, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../API/axiosConfig";
 import classes from "./login.module.css";
-import {appState} from  '../../App'
+import { appState } from "../../App";
 import { BiHide, BiShow } from "react-icons/bi";
 import { ClipLoader } from "react-spinners";
+import axiosBase from "../../API/axiosConfig";
 
 function Login({ visible }) {
   const { setShow } = visible || {};
@@ -31,7 +32,7 @@ function Login({ visible }) {
     }
 
     try {
-      const response = await axios.post("/user/login", {
+      const response = await axiosBase.post("/user/login", {
         email: emailValue,
         password: passwordValue,
       });
@@ -75,7 +76,6 @@ function Login({ visible }) {
           type="email"
           placeholder="Enter your email"
           className={classes.inputField}
-          
         />
         <div className={classes.passwordWrapper}>
           <input
@@ -85,7 +85,6 @@ function Login({ visible }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={classes.inputField}
-            
           />
           <button
             type="button"

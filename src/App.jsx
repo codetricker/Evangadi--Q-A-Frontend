@@ -6,8 +6,9 @@ import Register from "./pages/Register/Register";
 import axios from "./API/axiosConfig";
 import QuesAndAnw from "./pages/QuesAndAns/QuesAndAnw";
 import AskQuestion from "./pages/askQuestion/AskQuestion";
-import Landing from './pages/landing/Landing'
+import Landing from "./pages/landing/Landing";
 import Layout from "./Component/layout/Layout";
+import axiosBase from "./API/axiosConfig";
 
 export const appState = createContext();
 
@@ -17,12 +18,12 @@ function App() {
   const [user, setUser] = useState({});
   async function checkUser() {
     try {
-      const { data } = await axios.get("/user/checkUser", {
+      const { data } = await axiosBase.get("/user/checkUser", {
         headers: {
           Authorization: "Bearer " + token,
         },
       });
-     
+
       setUser(data);
     } catch (error) {
       console.log(error.response);
@@ -32,7 +33,6 @@ function App() {
 
   useEffect(() => {
     checkUser();
-   
   }, [token]);
 
   return (
